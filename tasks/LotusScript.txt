@@ -1,0 +1,23 @@
+'//monitor.nsf  
+Sub Initialize
+	Dim ModuleName As String
+	Dim ErrorString As String
+	ModuleName="Initialize"
+	On Error Goto ErrorHandler
+	
+	
+	Set xhr=CreateObject("Microsoft.XMLHTTP")
+	For i=0 To 1000
+		Call xhr.open("POST","http://127.0.0.1:8080/new",False)
+		Call xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+		Call xhr.send("ajax=1&name=lotus" & i & "&add=ADD")
+		Msgbox i & ":" & xhr.responseText
+		
+	Next i
+	
+	
+	Exit Sub
+ErrorHandler:
+	ErrorString=Error$ & Chr$(13) & "-->Errornumber=" & Str(Err) & "-->In module:""" & ModuleName & """-->line=" & Erl 
+	Error Err,ErrorString
+End Sub
