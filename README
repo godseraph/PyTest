@@ -1,4 +1,7 @@
 ﻿
+env环境说明:
+orig-prefix.txt 中设置了 Python27的目录
+
 1.运行例子:
 c:\env\Scripts\python tasks.py
 2.浏览器访问:

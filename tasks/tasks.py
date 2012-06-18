@@ -24,16 +24,16 @@ here = os.path.dirname(os.path.abspath(__file__))
 # views
 @view_config(route_name='list', renderer='list.mako')
 def list_view(request):
-    rs = request.db.execute("select id, name from tasks where closed = 0")
-    tasks = [dict(id=row[0], name=row[1]) for row in rs.fetchall()]
-    return {'tasks': tasks}
+    rs = request.db.execute("select id, gname, gwcreator from tasks where isover = 0")
+    tasks = [dict(id=row[0], name=row[1], dt=row[2]) for row in rs.fetchall()]
+    return {'tasks': tasks,'ta'}
 
 @view_config(route_name='new', renderer='new.mako')
 def new_view(request):
     if request.method == 'POST':
         if request.POST.get('name'):
-            request.db.execute('insert into tasks (name, closed) values (?, ?)',
-                               [request.POST['name'], 0])
+            request.db.execute('insert into tasks (unid, gname, isover) values (?, ?, ?)',
+                               ['12345',request.POST['name'], 0])
             request.db.commit()
             if request.POST.get('ajax'):
                 return Response(json.dumps({'return':'1'}))
@@ -47,7 +47,7 @@ def new_view(request):
 @view_config(route_name='close')
 def close_view(request):
     task_id = int(request.matchdict['id'])
-    request.db.execute("update tasks set closed = ? where id = ?", (1, task_id))
+    request.db.execute("update tasks set isover = ? where id = ?", (1, task_id))
     request.db.commit()
     request.session.flash('Task was successfully closed!')
     return HTTPFound(location=request.route_url('list'))

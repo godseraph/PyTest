@@ -7,7 +7,7 @@
 % if tasks:
   % for task in tasks:
   <li>
-    <span class="name">${task['name']}</span>
+    <span class="name">${task['name']}</span><span class="name">${task['dt']}</span>
     <span class="actions">
       [ <a href="${request.route_url('close', id=task['id'])}">close</a> ]
     </span>
